@@ -1,12 +1,14 @@
 all:pmboot
-pmboot.s: pmboot.S
-	gcc  -E  pmboot.S > pmboot.s
-pmboot.o: pmboot.s
-	as -o pmboot.o pmboot.s
-pmboot: pmboot.o	
+pmboot.ss: pmboot.S
+	gcc  -E  pmboot.S > pmboot.ss
+pmboot.o: pmboot.ss
+	as -o pmboot.o pmboot.ss
+#pmboot.o: pmboot.S
+	#as -o pmboot.o pmboot.S
+pmboot: pmboot.o
 	ld --oformat binary -N -e start -Ttext 0x7c00 -o pmboot pmboot.o
 run: pmboot
 	qemu-system-i386 -fda pmboot
 .PHONY: clean
 clean:
-	rm pmboot.o pmboot pmboot.s
+	rm pmboot.o pmboot
